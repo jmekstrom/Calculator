@@ -4,11 +4,11 @@ body{
 
 button{
 	height:75px;
-	width:75px;
+	width:72px;
 }
 
 .zero_button{
-	width:154px;
+	width:151px;
 }
 
 .display{
@@ -51,6 +51,7 @@ input:focus{
 .container{
 	height: 610px;
 	width: 345px;
+	max-width: 345;
 	border: 1px solid gray;
 	border-radius: 5px;
 	background-color: gray;
@@ -60,4 +61,5 @@ input:focus{
     font-family: 'digital-7'; /*a name to be used later*/
     src: url('fonts/digital-7.ttf'); /*URL to font*/
 }
+
 
