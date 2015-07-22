@@ -1,0 +1,63 @@
+body{
+	font-size: 25px;
+}
+
+button{
+	height:75px;
+	width:75px;
+}
+
+.zero_button{
+	width:154px;
+}
+
+.display{
+	height:200px;
+	width:313px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	margin-top: 15px;
+	text-align: right;
+	background-color: #B1E358;
+	font-family: 'digital-7';
+}
+
+#display_history{
+	height: 73%;
+	font-size: 20px;
+}
+
+#display_input{
+	font-size: 36px;
+}
+
+input{
+	background-color: #B1E358;
+	outline: none;
+	height:50px; 
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	text-align: right;
+	vertical-align: bottom;
+	border: none;
+}
+
+input:focus{
+	background-color: #B1E358;
+	outline: none;
+}
+
+.container{
+	height: 610px;
+	width: 345px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	background-color: gray;
+}
+
+@font-face {
+    font-family: 'digital-7'; /*a name to be used later*/
+    src: url('fonts/digital-7.ttf'); /*URL to font*/
+}
+
