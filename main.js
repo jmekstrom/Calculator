@@ -1,4 +1,5 @@
 //global varibale declarations
+///////////////////////////////
 var display_val = "";
 var new_operand = "";
 var equation_array = [];
@@ -7,12 +8,14 @@ var new_operator = '';
 var digit_click_num = 0;
 var operator_click_num = 0;
 var divid_by_zero = false;
-var neg = 1;
+var mult_by_neg1 = false;
 var equals_just_used;
+var edited_operand = "";
 ///////////////////////////////
 
 
-
+//Input Functions, functions are all called by a button click
+///////////////////////////////////////////////////////////////////////////////////
 function input_digit(n) {
 	if(equals_just_used){
 		AC();
@@ -34,23 +37,14 @@ function operator(x){
 }
 
 function negate(){
-	neg = neg * (-1);
-	console.log(neg);
-	if(neg == -1){
-		display_val= "-"+display_val;
+	if(is_operator(equation_array[0])){
+		return;
 	}
-	else{
-		console.log(display_val);
-		display_val = display_val.substr(1);
-	}
+	var negated_element = parseFloat(equation_array[0])*(-1);
+	equation_array[0] = negated_element.toString();
+	console.log(negated_element);
+
 	update_display();
-
-}
-
-function update_display(){
-	$("#display_input").val(display_val);
-	console.log("Display value is:",display_val);
-	console.log("equation Array is:",equation_array);
 }
 
 function AC() {
@@ -59,40 +53,71 @@ function AC() {
     display_val = "";
     equation_array = [];
     new_operand = "";
-    console.log("input display cleared",equation_array)
+    console.log("All Cleared",equation_array)
 }
 
 function C() {
+	//checks to see if the equation array is already empty from previous C() calls
+	if(equation_array[0] == "" || equation_array.length == 0){
+   		AC();
+   		return;
+   	}
 	//delete last character in the display
     display_val = display_val.substr(0,display_val.length-1);
-    //deletes the last element in the array
-    equation_array.pop();
-    console.log("last character deleted");
+    //deletes the last element in the equation array
+    edited_operand = equation_array.pop();
+    if(edited_operand == ""){
+    	edited_operand = equation_array.pop();
+    }
+    edited_operand = edited_operand.substr(0,edited_operand.length-1);
+    equation_array.push(edited_operand);
+    console.log("Last input cleared");
     update_display();
 }
 
 function equals(e) {
+	//stores equation to be calculated into the history display
 	$("#display_history").val(display_val);
+
 	calculate();
+	console.log("divid_by_zero being called",divid_by_zero,display_val)
+	//checks to see if a division of zero has occured, if not proceed as normal
 	if(!divid_by_zero){
-		display_val = neg * answer;
-		display_val = display_val.toString();
+		display_val = answer;
+		equation_array = [];
+		equation_array[0] = display_val.toString();
 	}
+
 	update_display(); 
-	update_variables();
 	equals_just_used = true;
+
+	
 }
 
+function parenthesis(){
+
+}
+
+function percentage(){
+	equals();
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+//Calculation functions
+/////////////////////////////////////////////////////////////////////////////////////////
 function calculate() {
-	// sort values to calculate
+	// sorts values to calculate
 	var operand1 = '';
 	var operator = '';
 	var operand2 = '';
-	special_case();
+
+	special_cases();
 
 	if(divid_by_zero){
 		return;
 	}
+
 	for (var i = 0; i < equation_array.length; i+=2) {
 		if(i == 0){
 			operand1 = equation_array[i];
@@ -118,17 +143,53 @@ function calculate() {
 			break;
 		case "^":
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
-			break;	
-	}
+			break;		
+	}		
 	}	
 
+}
+
+function special_cases(){
+	//Inserts a zero into index 1 of equation array if the first input is an operation
+	if(is_operator(equation_array[0])){
+				equation_array.unshift("0");
+	};
+
+	//Checks for a divid by zero case		
+	for (var i = 0; i < equation_array.length; i++) {
+		if(equation_array[i] == "/" && equation_array[i+1] == 0){
+			display_val = "Cannot Divid By Zero!"
+			divid_by_zero = true;
+		}
+	};
+
+	//Checks if an equation ends with an operation, if true duplicates last input
+	if(is_operator(equation_array[equation_array.length-1])){
+		equation_array.push(equation_array[equation_array.length-2]);
+	};
+
+}
+///////////////////////////////////////////////////////////////////////////
+
+
+//data management and updating
+//////////////////////////////////////////////////////////////////////////
+function update_display(){
+	
+	display_val = '';
+	for (i = 0; i < equation_array.length; i++){
+		display_val += equation_array[i];
+	}
+	$("#display_input").val(display_val);
+	
+	console.log("Equation Array is:",equation_array);
+	console.log("Display value is:",display_val);
 }
 
 function update_variables(state,input){
 	switch(state){
 
 		case 'digit':
-			display_val = display_val + input;
     		new_operand = new_operand + input;
     		if(digit_click_num <= 1){
     			equation_array.push(new_operand);
@@ -146,39 +207,43 @@ function update_variables(state,input){
     		else{
     			equation_array.pop();
     			equation_array.push(new_operator);
-    			display_val = display_val.substr(0,display_val.length-1);
 			}
-				display_val = display_val + input;
 				new_operand = '';
 				new_operator = '';
     		break;
 
-    	case equals:
-    		equation_array = [];
-    		equation_array.push(answer);
-    		break;
 }
 }
 
-function special_case(){
-	//The inserts a zero if the first input is subtraction, to produce a negative number
-	if(equation_array[0] == "-"){
-				equation_array.unshift("0");
-			}
-
-	//Checks for a divid by zero case		
-	for (var i = 0; i < equation_array.length; i++) {
-		if(equation_array[i] == "/" && equation_array[i+1] == 0){
-			display_val = "Cannot Divid By Zero!"
-			divid_by_zero = true;
-		}
-	};
-
-	//Need to add
-	//Checks for an equation ending with an operation
+/*******************************************************************
+* Function name: is_operator
+* Purpose: to easily check if a string is a known operator
+* Parameters: one string, x
+* Returns: one boolean, True if x is a known operator, false if not
+*******************************************************************/
+function is_operator(x){
+	switch(x){
+		case "+":
+			return true;
+			break;
+		case "-":
+			return true;
+			break;
+		case "x":
+			return true;
+			break;
+		case "/":
+			return true;
+			break;
+		case "^":
+			return true;
+			break;
+		default:
+			return false;
+	}
 
 }
+///////////////////////////////////////////////////////////////////////////
 
-function parenthesis(){
-	
-}
+
+
