@@ -31,7 +31,9 @@ function input_digit(n) {
 function operator(x){
 	equals_just_used = false;
 	digit_click_num = 0;
-	operator_click_num++;
+	if(x != "%" || x != "(" || x != ")"){
+		operator_click_num++;
+	}
 	update_variables('operator',x);
 	update_display();
 }
@@ -98,9 +100,6 @@ function parenthesis(){
 
 }
 
-function percentage(){
-	equals();
-}
 /////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -116,6 +115,10 @@ function calculate() {
 
 	if(divid_by_zero){
 		return;
+	}
+	
+	if(equation_array.length == 1){
+		answer = equation_array[0];  
 	}
 
 	for (var i = 0; i < equation_array.length; i+=2) {
@@ -143,7 +146,10 @@ function calculate() {
 			break;
 		case "^":
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
-			break;		
+			break;	
+		case "%":
+			answer = parseFloat(operand1) / parseFloat(operand2);
+			break;  		
 	}		
 	}	
 
@@ -168,6 +174,13 @@ function special_cases(){
 		equation_array.push(equation_array[equation_array.length-2]);
 	};
 
+	//Checks for percentage sign		
+	for (var i = 0; i < equation_array.length; i++) {
+		if(equation_array[i] == "%"){
+			equation_array.splice(i+1,0,"100");
+		}
+	};
+
 }
 ///////////////////////////////////////////////////////////////////////////
 
@@ -175,10 +188,17 @@ function special_cases(){
 //data management and updating
 //////////////////////////////////////////////////////////////////////////
 function update_display(){
-	
+	if(!divid_by_zero){
 	display_val = '';
 	for (i = 0; i < equation_array.length; i++){
 		display_val += equation_array[i];
+	}
+	}
+	else{
+		equation_array = [];
+		new_operand = "";
+		digit_click_num = 0;
+		divid_by_zero = false;
 	}
 	$("#display_input").val(display_val);
 	
