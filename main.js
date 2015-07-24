@@ -11,6 +11,7 @@ var divid_by_zero = false;
 var mult_by_neg1 = false;
 var equals_just_used;
 var edited_operand = "";
+var operator_index_array = [];
 ///////////////////////////////
 
 
@@ -31,7 +32,7 @@ function input_digit(n) {
 function operator(x){
 	equals_just_used = false;
 	digit_click_num = 0;
-	if(x != "%" || x != "(" || x != ")"){
+	if(x != "%"){
 		operator_click_num++;
 	}
 	update_variables('operator',x);
@@ -82,7 +83,7 @@ function equals(e) {
 	$("#display_history").val(display_val);
 
 	calculate();
-	console.log("divid_by_zero being called",divid_by_zero,display_val)
+
 	//checks to see if a division of zero has occured, if not proceed as normal
 	if(!divid_by_zero){
 		display_val = answer;
@@ -96,8 +97,9 @@ function equals(e) {
 	
 }
 
-function parenthesis(){
-
+function parentheses(p){
+	update_variables('operator',p);
+	update_display();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +114,7 @@ function calculate() {
 	var operand2 = '';
 
 	special_cases();
+	order_of_operations();
 
 	if(divid_by_zero){
 		return;
@@ -122,6 +125,7 @@ function calculate() {
 	}
 
 	for (var i = 0; i < equation_array.length; i+=2) {
+		
 		if(i == 0){
 			operand1 = equation_array[i];
 		}
@@ -181,6 +185,17 @@ function special_cases(){
 		}
 	};
 
+}
+
+function order_of_operations(){
+	operator_index_array = [];
+	all_indexOf("^");
+	all_indexOf("x");
+	all_indexOf("/");
+	all_indexOf("+");
+	all_indexOf("-");
+	console.log("Operator index array:",operator_index_array);
+	
 }
 ///////////////////////////////////////////////////////////////////////////
 
@@ -265,5 +280,20 @@ function is_operator(x){
 }
 ///////////////////////////////////////////////////////////////////////////
 
+function all_indexOf(x){
+	var indexOf_result;
+	var previous_indexOf_result;
+	//console.log("searching for all indexes of:",x);
+	for(var i = 0; i < equation_array.length; i++){
 
+		indexOf_result = equation_array.indexOf(x,i);
+		
+		if(indexOf_result >= 0 && previous_indexOf_result != indexOf_result){
+		operator_index_array.push(indexOf_result);
+		}
 
+		previous_indexOf_result = equation_array.indexOf(x,i);
+
+	}
+	//console.log("Operator Array:",operator_index_array);
+}
