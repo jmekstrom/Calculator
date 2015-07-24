@@ -12,6 +12,7 @@ var mult_by_neg1 = false;
 var equals_just_used;
 var edited_operand = "";
 var operator_index_array = [];
+var ordered_index;
 ///////////////////////////////
 
 
@@ -113,6 +114,7 @@ function calculate() {
 	var operator = '';
 	var operand2 = '';
 
+
 	special_cases();
 	order_of_operations();
 
@@ -188,13 +190,67 @@ function special_cases(){
 }
 
 function order_of_operations(){
-	operator_index_array = [];
-	all_indexOf("^");
-	all_indexOf("x");
-	all_indexOf("/");
-	all_indexOf("+");
-	all_indexOf("-");
-	console.log("Operator index array:",operator_index_array);
+	var percentage_indexOf = equation_array.indexOf("%");
+	var exponent_indexOf =   equation_array.indexOf("^");
+	var mult_indexOf     =   equation_array.indexOf("x");
+	var divid_indexOf    =   equation_array.indexOf("/");
+	var add_indexOf      =   equation_array.indexOf("+");
+	var sub_indexOf      =   equation_array.indexOf("-");
+	var operators_digested = false;
+
+	if(percentage_indexOf >= 0){
+		ordered_index = percentage_indexOf;
+		var percentages_found = true;
+	}
+	else if(percentage_indexOf < 0 && percentages_found){
+			percentages_found = false; 
+		return;
+	}
+	else if(exponent_indexOf >= 0){
+		var exponents_found = true;
+		ordered_index = exponent_indexOf;
+	}
+	else if(exponent_indexOf < 0 && percentages_found){
+		exponents_found = false; 
+		return;
+	}
+	else if(mult_indexOf >= 0){
+		var mult_found = true;
+		ordered_index = mult_indexOf;
+	}
+	else if(mult_indexOf < 0 && mult_found){
+		mult_found = false; 
+		return;
+	}
+	else if(divid_indexOf >= 0){
+		var divid_found = true;
+		ordered_index = divid_indexOf;
+	}
+	else if(divid_indexOf < 0 && divid_found){
+		divid_found = false; 
+		return;
+	}
+	else if(add_indexOf >= 0){
+		var add_found = true;
+		ordered_index = add_indexOf;
+	}
+	else if(add_indexOf < 0 && add_found){
+		add_found = false; 
+		return;
+	}
+	else if(sub_indexOf >= 0){
+		var sub_found = true;
+		ordered_index = sub_indexOf;
+	}
+	else if(sub_indexOf < 0 && sub_found){
+		sub_found = false; 
+		return;
+	}
+	else{
+		return operators_digested = true;
+	}
+	
+	console.log("Operator index array:",ordered_index);
 	
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -280,20 +336,3 @@ function is_operator(x){
 }
 ///////////////////////////////////////////////////////////////////////////
 
-function all_indexOf(x){
-	var indexOf_result;
-	var previous_indexOf_result;
-	//console.log("searching for all indexes of:",x);
-	for(var i = 0; i < equation_array.length; i++){
-
-		indexOf_result = equation_array.indexOf(x,i);
-		
-		if(indexOf_result >= 0 && previous_indexOf_result != indexOf_result){
-		operator_index_array.push(indexOf_result);
-		}
-
-		previous_indexOf_result = equation_array.indexOf(x,i);
-
-	}
-	//console.log("Operator Array:",operator_index_array);
-}
