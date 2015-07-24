@@ -13,6 +13,7 @@ var equals_just_used;
 var edited_operand = "";
 var operator_index_array = [];
 var ordered_index;
+var decimal_clicked = false;
 ///////////////////////////////
 
 
@@ -43,6 +44,7 @@ function input_digit(n) {
 * Returns: updated equation array
 *****************************************************************************************/
 function operator(x){
+	decimal_clicked = false;
 	equals_just_used = false;
 	digit_click_num = 0;
 	if(x != "%"){
@@ -159,51 +161,76 @@ function parentheses(p){
 * Updates needed: need to change the for loop to a while loop and incorporate the 
 *                 order_of_operations function.
 *****************************************************************************************/
+//DWP THIS ONE
+//This function takes the equation array and sorts through the elements in it to perform the
+//desired operation
 function calculate() {
 	// sorts values to calculate
+	//declares the varibale operand1 to be used for switch
 	var operand1 = '';
+	//declares the varibale operator to be used for switch
 	var operator = '';
+	//declares the varibale operand2 to be used for switch
 	var operand2 = '';
 
-
+	//calls the function special_cases to condition the equation variable to correct format
 	special_cases();
-	order_of_operations();
-
+	
+	//check for a divid by zero case, if that case is true it aborts the function
 	if(divid_by_zero){
+		//return aborts function
 		return;
 	}
 	
+	//checks to see if the equation array has a need to be calculated. If not it just 
+	//returns the equation array as the answer
 	if(equation_array.length == 1){
+		//setting the first index of the equation array to answer which will be displayed
 		answer = equation_array[0];  
 	}
 
-	for (var i = 0; i < equation_array.length; i+=2) {
-		
+	//while loop under construction, while run until the order_of_operations function finishes
+	for (var i = 0; i < equation_array.length; i++) {
+
+		//checks for intial conditions, if it is operand1 is the first index
 		if(i == 0){
+			//sets operand1 to the 0 index of equation array
 			operand1 = equation_array[i];
 		}
+		//if not the answer from a previous calculation is operand1
 		else{
+			//sets operand1 to the previous answer
 			operand1 = answer;
 		}
+		//finds the correct operator based on a pre-concieve equation array format
 		operator = equation_array[i+1];
+		//find the correct operand2 baces on a pre-concieved equation array format
 		operand2 = equation_array[i+2];
 
+	//checks the operator variable for the correct case
 	switch(operator){
+		//addition case
 		case "+":
 			answer = parseFloat(operand1) + parseFloat(operand2);
 			break;
+		//subtraction case	
 		case "-":
 			answer = parseFloat(operand1) - parseFloat(operand2);
 			break;
+		//multiplication case
 		case "x":
 			answer = parseFloat(operand1) * parseFloat(operand2);
 			break;
+		//divid case
 		case "/":
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;
+		//exponent case
 		case "^":
+			//uses javascript math function to calculate the exponent
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
 			break;	
+		//percentage case	
 		case "%":
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;  		
@@ -263,7 +290,7 @@ function order_of_operations(){
 	var divid_indexOf    =   equation_array.indexOf("/");
 	var add_indexOf      =   equation_array.indexOf("+");
 	var sub_indexOf      =   equation_array.indexOf("-");
-	var operators_digested = false;
+	
 
 	if(percentage_indexOf >= 0){
 		ordered_index = percentage_indexOf;
@@ -271,7 +298,7 @@ function order_of_operations(){
 	}
 	else if(percentage_indexOf < 0 && percentages_found){
 			percentages_found = false; 
-		return;
+		return false;
 	}
 	else if(exponent_indexOf >= 0){
 		var exponents_found = true;
@@ -279,7 +306,7 @@ function order_of_operations(){
 	}
 	else if(exponent_indexOf < 0 && percentages_found){
 		exponents_found = false; 
-		return;
+		return false;
 	}
 	else if(mult_indexOf >= 0){
 		var mult_found = true;
@@ -287,7 +314,7 @@ function order_of_operations(){
 	}
 	else if(mult_indexOf < 0 && mult_found){
 		mult_found = false; 
-		return;
+		return false;
 	}
 	else if(divid_indexOf >= 0){
 		var divid_found = true;
@@ -295,7 +322,7 @@ function order_of_operations(){
 	}
 	else if(divid_indexOf < 0 && divid_found){
 		divid_found = false; 
-		return;
+		return false;
 	}
 	else if(add_indexOf >= 0){
 		var add_found = true;
@@ -303,7 +330,7 @@ function order_of_operations(){
 	}
 	else if(add_indexOf < 0 && add_found){
 		add_found = false; 
-		return;
+		return false;
 	}
 	else if(sub_indexOf >= 0){
 		var sub_found = true;
@@ -311,10 +338,10 @@ function order_of_operations(){
 	}
 	else if(sub_indexOf < 0 && sub_found){
 		sub_found = false; 
-		return;
+		return false;
 	}
 	else{
-		return operators_digested = true;
+		return true;
 	}
 	
 	console.log("Operator index array:",ordered_index);
@@ -366,7 +393,15 @@ function update_variables(state,input){
 	switch(state){
 
 		case 'digit':
+			if(input == "." && decimal_clicked){
+    			return;
+    		}
+			if(input == "." && !decimal_clicked){
+    		decimal_clicked = true;	
+    		}
+
     		new_operand = new_operand + input;
+
     		if(digit_click_num <= 1){
     			equation_array.push(new_operand);
     		}
