@@ -18,6 +18,12 @@ var ordered_index;
 
 //Input Functions, functions are all called by a button click
 ///////////////////////////////////////////////////////////////////////////////////
+/****************************************************************************************
+* Function name: input digit
+* Purpose: 	Grabs the number string and uses it to update the equation array
+* Parameters: n, string, specific number value
+* Returns: updated equation array
+*****************************************************************************************/
 function input_digit(n) {
 	if(equals_just_used){
 		AC();
@@ -30,6 +36,12 @@ function input_digit(n) {
     
 };
 
+/****************************************************************************************
+* Function name: operator
+* Purpose: 	Grabs the operator string and uses it to update the equation array
+* Parameters: x, string, specific operator value
+* Returns: updated equation array
+*****************************************************************************************/
 function operator(x){
 	equals_just_used = false;
 	digit_click_num = 0;
@@ -40,6 +52,12 @@ function operator(x){
 	update_display();
 }
 
+/****************************************************************************************
+* Function name: negate
+* Purpose: 	to negate the current input
+* Parameters: none
+* Returns: toggled negativity of index 0 of the equation array
+*****************************************************************************************/
 function negate(){
 	if(is_operator(equation_array[0])){
 		return;
@@ -50,6 +68,12 @@ function negate(){
 	update_display();
 }
 
+/****************************************************************************************
+* Function name: AC or All Clear
+* Purpose: 	Clears all variables and display
+* Parameters: none 
+* Returns: updated global variables
+*****************************************************************************************/
 function AC() {
 	digit_click_num = 0;
     $("#display_input").val("");
@@ -57,8 +81,15 @@ function AC() {
     equation_array = [];
     new_operand = "";
     console.log("All Cleared",equation_array)
+    //should I add a condition to delete history?
 }
 
+/****************************************************************************************
+* Function name: C or Clear
+* Purpose: 	deletes the inputs one by one, once nothing is left to clear it calls AC() 
+* Parameters: none
+* Returns: updated equation array
+*****************************************************************************************/
 function C() {
 	//checks to see if the equation array is already empty from previous C() calls
 	if(equation_array[0] == "" || equation_array.length == 0){
@@ -78,6 +109,13 @@ function C() {
     update_display();
 }
 
+/****************************************************************************************
+* Function name: equals
+* Purpose: 	To initiate calculation and store equation history
+* Parameters: e as a string "=", as of now it is not used
+* Returns: equals_just_used (boolean), clears equation_array and stores the answer as the 
+*		   only element into the equation array.
+*****************************************************************************************/
 function equals(e) {
 	//stores equation to be calculated into the history display
 	$("#display_history").val(display_val);
@@ -97,6 +135,12 @@ function equals(e) {
 	
 }
 
+/****************************************************************************************
+* Function name: parentheses (not complete)
+* Purpose: 	
+* Parameters:
+* Returns: 
+*****************************************************************************************/
 function parentheses(p){
 	update_variables('operator',p);
 	update_display();
@@ -107,6 +151,14 @@ function parentheses(p){
 
 //Calculation functions
 /////////////////////////////////////////////////////////////////////////////////////////
+/****************************************************************************************
+* Function name: calculate
+* Purpose: 	To sort through the equation_array and calculate the answers
+* Parameters: none, 
+* Returns: answer, number 
+* Updates needed: need to change the for loop to a while loop and incorporate the 
+*                 order_of_operations function.
+*****************************************************************************************/
 function calculate() {
 	// sorts values to calculate
 	var operand1 = '';
@@ -160,6 +212,12 @@ function calculate() {
 
 }
 
+/****************************************************************************************
+* Function name: special_cases
+* Purpose: 	Manipulates the equation array to match expected formatting for special cases
+* Parameters: none, equation_array is manipulated
+* Returns: equation_array
+*****************************************************************************************/
 function special_cases(){
 	//Inserts a zero into index 1 of equation array if the first input is an operation
 	if(is_operator(equation_array[0])){
@@ -188,7 +246,7 @@ function special_cases(){
 
 }
 
-/*******************************************************************
+/****************************************************************************************
 * Function name: order_of_operations
 * Purpose: Used to sort through and find the index of the first operation to be performed.  
 * 		   Once the first is found it exits and is used in the calculate function. When 
@@ -196,8 +254,8 @@ function special_cases(){
 *		   operations to be perform and returns true to indicate that it is finished
 *		   searching.		
 * Parameters: none. looks at global variable equation_array
-* Returns: one boolean, True if x is a known operator, false if not
-*******************************************************************/
+* Returns: true if finished searching
+*****************************************************************************************/
 function order_of_operations(){
 	var percentage_indexOf = equation_array.indexOf("%");
 	var exponent_indexOf =   equation_array.indexOf("^");
