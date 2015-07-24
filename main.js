@@ -33,8 +33,7 @@ function input_digit(n) {
 	operator_click_num = 0;
 	digit_click_num++;
     update_variables('digit',n);
-    update_display();
-    
+    update_display();  
 };
 
 /****************************************************************************************
@@ -66,7 +65,6 @@ function negate(){
 	}
 	var negated_element = parseFloat(equation_array[0])*(-1);
 	equation_array[0] = negated_element.toString();
-
 	update_display();
 }
 
@@ -77,6 +75,7 @@ function negate(){
 * Returns: updated global variables
 *****************************************************************************************/
 function AC() {
+	decimal_clicked = false;
 	digit_click_num = 0;
     $("#display_input").val("");
     display_val = "";
@@ -130,10 +129,8 @@ function equals(e) {
 		equation_array = [];
 		equation_array[0] = display_val.toString();
 	}
-
 	update_display(); 
 	equals_just_used = true;
-
 	
 }
 
@@ -189,7 +186,7 @@ function calculate() {
 		answer = equation_array[0];  
 	}
 
-	//while loop under construction, while run until the order_of_operations function finishes
+	//for loop the iterates to the length of the equation array
 	for (var i = 0; i < equation_array.length; i++) {
 
 		//checks for intial conditions, if it is operand1 is the first index
