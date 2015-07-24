@@ -46,7 +46,6 @@ function negate(){
 	}
 	var negated_element = parseFloat(equation_array[0])*(-1);
 	equation_array[0] = negated_element.toString();
-	console.log(negated_element);
 
 	update_display();
 }
@@ -189,6 +188,16 @@ function special_cases(){
 
 }
 
+/*******************************************************************
+* Function name: order_of_operations
+* Purpose: Used to sort through and find the index of the first operation to be performed.  
+* 		   Once the first is found it exits and is used in the calculate function. When 
+*		   that answer is found the the function is called again until it finds no more
+*		   operations to be perform and returns true to indicate that it is finished
+*		   searching.		
+* Parameters: none. looks at global variable equation_array
+* Returns: one boolean, True if x is a known operator, false if not
+*******************************************************************/
 function order_of_operations(){
 	var percentage_indexOf = equation_array.indexOf("%");
 	var exponent_indexOf =   equation_array.indexOf("^");
@@ -258,25 +267,43 @@ function order_of_operations(){
 
 //data management and updating
 //////////////////////////////////////////////////////////////////////////
+/*******************************************************************
+* Function name: update_display
+* Purpose: Takes values from the equation array to update the screen/display.  Used a lot.
+* Parameters: none
+* Returns: updates global variable display_val and outputs it to the screen
+*******************************************************************/
 function update_display(){
+	//if no divid by zero case is found, this for loop runs through each index of the equation array and concatenates it to the display_val variable
 	if(!divid_by_zero){
 	display_val = '';
 	for (i = 0; i < equation_array.length; i++){
 		display_val += equation_array[i];
 	}
 	}
+	//if a divid by zero case is found this else statement re-initializes variables.  Same as calling the all clear (AC()) function but does not clear the display.
 	else{
 		equation_array = [];
 		new_operand = "";
 		digit_click_num = 0;
 		divid_by_zero = false;
 	}
+
+	//this function updates the value of the screen by targeting the DOM with id "display_input" with the contents of the variable display_val
 	$("#display_input").val(display_val);
 	
+	//console log to keep track of data
 	console.log("Equation Array is:",equation_array);
 	console.log("Display value is:",display_val);
 }
 
+
+/*******************************************************************
+* Function name: update_variables
+* Purpose: to clean up the repeative variable updating, not as useful as I thought it would be
+* Parameters: state, string, tells you what function needs updating | input, string, used to pass specific button value to update variables
+* Returns: updates global variables
+*******************************************************************/
 function update_variables(state,input){
 	switch(state){
 
