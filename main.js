@@ -120,6 +120,13 @@ function C() {
 *****************************************************************************************/
 function equals(e) {
 	//stores equation to be calculated into the history display
+	var display4 = $("#display_history3").val();
+	$("#display_history4").val(display4);
+    var display3 = $("#display_history2").val();
+	$("#display_history3").val(display3);
+	var display2 = $("#display_history").val();
+	$("#display_history2").val(display2);
+	
 	$("#display_history").val(display_val);
 
 	calculate();
@@ -182,11 +189,12 @@ function calculate() {
 	var done = false; 
 	while (!done) {
 
-		console.log(equation_array)
+		
 		done = order_of_operations(equation_array);
 		operand1 = equation_array[ordered_index-1];
 		operator = equation_array[ordered_index];
 		operand2 = equation_array[ordered_index+1];
+		console.log("calculated equation_array:",equation_array)
 
 	switch(operator){
 		case "+":
@@ -202,7 +210,9 @@ function calculate() {
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;
 		case "^":
+		console.log("equation array ooo",equation_array)
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
+			
 			break;	
 		case "%":
 			answer = parseFloat(operand1) / parseFloat(operand2);
@@ -274,10 +284,10 @@ function order_of_operations(array){
 	var working_array      =   array.slice(open_p_lastIndexOf+1, close_p_indexOf);	
 		
 		if(working_array.length == 1){
-			console.log("before splice:",equation_array)
+			//console.log("before splice:",equation_array)
 			equation_array.splice(open_p_lastIndexOf,1);
 			equation_array.splice(open_p_lastIndexOf+1,1)
-			console.log("after splice:",equation_array)
+			//console.log("after splice:",equation_array)
 		}
 	
 	var percentage_indexOf =   array.indexOf("%",open_p_lastIndexOf);

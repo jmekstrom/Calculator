@@ -23,9 +23,13 @@ button{
 	font-family: 'digital-7';
 }
 
-#display_history{
-	height: 73%;
+.history{
+	height: 35px;
 	font-size: 20px;
+}
+
+#display_history{
+	
 }
 
 #display_input{
