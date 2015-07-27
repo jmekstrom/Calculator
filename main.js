@@ -3,6 +3,7 @@
 var display_val = "";
 var new_operand = "";
 var equation_array = [];
+var working_array = [];
 var answer = "";
 var new_operator = '';
 var digit_click_num = 0;
@@ -158,80 +159,56 @@ function parentheses(p){
 * Updates needed: need to change the for loop to a while loop and incorporate the 
 *                 order_of_operations function.
 *****************************************************************************************/
-//DWP THIS ONE
 //This function takes the equation array and sorts through the elements in it to perform the
 //desired operation
 function calculate() {
-	// sorts values to calculate
-	//declares the varibale operand1 to be used for switch
 	var operand1 = '';
-	//declares the varibale operator to be used for switch
 	var operator = '';
-	//declares the varibale operand2 to be used for switch
 	var operand2 = '';
 
 	//calls the function special_cases to condition the equation variable to correct format
 	special_cases();
 	
-	//check for a divid by zero case, if that case is true it aborts the function
 	if(divid_by_zero){
-		//return aborts function
 		return;
 	}
 	
 	//checks to see if the equation array has a need to be calculated. If not it just 
 	//returns the equation array as the answer
 	if(equation_array.length == 1){
-		//setting the first index of the equation array to answer which will be displayed
 		answer = equation_array[0];  
 	}
 
-	//for loop the iterates to the length of the equation array
-	for (var i = 0; i < equation_array.length; i++) {
+	var done = false; 
+	while (!done) {
 
-		//checks for intial conditions, if it is operand1 is the first index
-		if(i == 0){
-			//sets operand1 to the 0 index of equation array
-			operand1 = equation_array[i];
-		}
-		//if not the answer from a previous calculation is operand1
-		else{
-			//sets operand1 to the previous answer
-			operand1 = answer;
-		}
-		//finds the correct operator based on a pre-concieve equation array format
-		operator = equation_array[i+1];
-		//find the correct operand2 baces on a pre-concieved equation array format
-		operand2 = equation_array[i+2];
+		console.log(equation_array)
+		done = order_of_operations(equation_array);
+		operand1 = equation_array[ordered_index-1];
+		operator = equation_array[ordered_index];
+		operand2 = equation_array[ordered_index+1];
 
-	//checks the operator variable for the correct case
 	switch(operator){
-		//addition case
 		case "+":
 			answer = parseFloat(operand1) + parseFloat(operand2);
 			break;
-		//subtraction case	
 		case "-":
 			answer = parseFloat(operand1) - parseFloat(operand2);
 			break;
-		//multiplication case
 		case "x":
 			answer = parseFloat(operand1) * parseFloat(operand2);
 			break;
-		//divid case
 		case "/":
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;
-		//exponent case
 		case "^":
-			//uses javascript math function to calculate the exponent
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
 			break;	
-		//percentage case	
 		case "%":
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;  		
-	}		
+	}
+	equation_array.splice(ordered_index-1,3,answer);	
 	}	
 
 }
@@ -268,6 +245,8 @@ function special_cases(){
 		}
 	};
 
+
+
 }
 
 /****************************************************************************************
@@ -280,70 +259,94 @@ function special_cases(){
 * Parameters: none. looks at global variable equation_array
 * Returns: true if finished searching
 *****************************************************************************************/
-function order_of_operations(){
-	var percentage_indexOf = equation_array.indexOf("%");
-	var exponent_indexOf =   equation_array.indexOf("^");
-	var mult_indexOf     =   equation_array.indexOf("x");
-	var divid_indexOf    =   equation_array.indexOf("/");
-	var add_indexOf      =   equation_array.indexOf("+");
-	var sub_indexOf      =   equation_array.indexOf("-");
+function order_of_operations(array){
+	var no_more_parentheses = false;
+	var open_p_lastIndexOf =   array.lastIndexOf("(");
+		if(open_p_lastIndexOf < 0){
+			open_p_lastIndexOf = 0;
+			no_more_parentheses = true;
+		}
+	var close_p_indexOf    =   array.indexOf(")",open_p_lastIndexOf);
+		if(close_p_indexOf < 0){
+			close_p_indexOf = 100000000;
+		}
+		
+	var working_array      =   array.slice(open_p_lastIndexOf+1, close_p_indexOf);	
+		
+		if(working_array.length == 1){
+			console.log("before splice:",equation_array)
+			equation_array.splice(open_p_lastIndexOf,1);
+			equation_array.splice(open_p_lastIndexOf+1,1)
+			console.log("after splice:",equation_array)
+		}
 	
+	var percentage_indexOf =   array.indexOf("%",open_p_lastIndexOf);
+	var exponent_indexOf   =   array.indexOf("^",open_p_lastIndexOf);
+	var mult_indexOf       =   array.indexOf("x",open_p_lastIndexOf);
+	var divid_indexOf      =   array.indexOf("/",open_p_lastIndexOf);
+	var add_indexOf        =   array.indexOf("+",open_p_lastIndexOf);
+	var sub_indexOf        =   array.indexOf("-",open_p_lastIndexOf);
+	var done = false;
 
-	if(percentage_indexOf >= 0){
+	if(percentage_indexOf >= 0 && percentage_indexOf < close_p_indexOf){
 		ordered_index = percentage_indexOf;
 		var percentages_found = true;
 	}
 	else if(percentage_indexOf < 0 && percentages_found){
 			percentages_found = false; 
-		return false;
+		return;
 	}
-	else if(exponent_indexOf >= 0){
+	else if(exponent_indexOf >= 0 && exponent_indexOf < close_p_indexOf){
 		var exponents_found = true;
 		ordered_index = exponent_indexOf;
 	}
-	else if(exponent_indexOf < 0 && percentages_found){
+	else if(exponent_indexOf < 0 && exponents_found){
 		exponents_found = false; 
-		return false;
+		return;
 	}
-	else if(mult_indexOf >= 0){
+	else if(mult_indexOf >= 0 && mult_indexOf < close_p_indexOf){
 		var mult_found = true;
 		ordered_index = mult_indexOf;
 	}
 	else if(mult_indexOf < 0 && mult_found){
 		mult_found = false; 
-		return false;
+		return;
 	}
-	else if(divid_indexOf >= 0){
+	else if(divid_indexOf >= 0 && divid_indexOf < close_p_indexOf){
 		var divid_found = true;
 		ordered_index = divid_indexOf;
 	}
 	else if(divid_indexOf < 0 && divid_found){
 		divid_found = false; 
-		return false;
+		return;
 	}
-	else if(add_indexOf >= 0){
+	else if(add_indexOf >= 0 && add_indexOf < close_p_indexOf){
 		var add_found = true;
 		ordered_index = add_indexOf;
 	}
 	else if(add_indexOf < 0 && add_found){
 		add_found = false; 
-		return false;
+		return;
 	}
-	else if(sub_indexOf >= 0){
+	else if(sub_indexOf >= 0 && sub_indexOf < close_p_indexOf){
 		var sub_found = true;
 		ordered_index = sub_indexOf;
 	}
 	else if(sub_indexOf < 0 && sub_found){
 		sub_found = false; 
-		return false;
+		return;
 	}
 	else{
-		return true;
+		return done = true;
 	}
-	
-	console.log("Operator index array:",ordered_index);
-	
+
+	if(!done && no_more_parentheses){
+		return done = false;
+	}
+
 }
+
+
 ///////////////////////////////////////////////////////////////////////////
 
 
