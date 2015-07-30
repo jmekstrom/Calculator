@@ -55,6 +55,20 @@ function operator(x){
 }
 
 /****************************************************************************************
+* Function name: parentheses (not complete)
+* Purpose: 	
+* Parameters:
+* Returns: 
+*****************************************************************************************/
+function parentheses(p){
+	digit_click_num = 0;
+	operator_click_num = 0;
+	update_variables('parentheses',p);
+	update_display();
+}
+
+
+/****************************************************************************************
 * Function name: negate
 * Purpose: 	to negate the current input
 * Parameters: none
@@ -142,16 +156,6 @@ function equals(e) {
 	
 }
 
-/****************************************************************************************
-* Function name: parentheses (not complete)
-* Purpose: 	
-* Parameters:
-* Returns: 
-*****************************************************************************************/
-function parentheses(p){
-	update_variables('operator',p);
-	update_display();
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,7 +199,7 @@ function calculate() {
 		operator = equation_array[ordered_index];
 		operand2 = equation_array[ordered_index+1];
 		console.log("calculated equation_array:",equation_array)
-
+		console.log("ordered_index:",ordered_index)
 	switch(operator){
 		case "+":
 			answer = parseFloat(operand1) + parseFloat(operand2);
@@ -210,9 +214,7 @@ function calculate() {
 			answer = parseFloat(operand1) / parseFloat(operand2);
 			break;
 		case "^":
-		console.log("equation array ooo",equation_array)
 			answer = Math.pow(parseFloat(operand1),parseFloat(operand2));
-			
 			break;	
 		case "%":
 			answer = parseFloat(operand1) / parseFloat(operand2);
@@ -234,25 +236,23 @@ function special_cases(){
 	if(is_operator(equation_array[0])){
 				equation_array.unshift("0");
 	};
-
-	//Checks for a divid by zero case		
+	var store_i = [];
 	for (var i = 0; i < equation_array.length; i++) {
+		//Checks for a divid by zero case	
 		if(equation_array[i] == "/" && equation_array[i+1] == 0){
 			display_val = "Cannot Divid By Zero!"
 			divid_by_zero = true;
 		}
+		//Checks for a percentage and inserts 100 to divid with	
+		if(equation_array[i] == "%"){
+			equation_array.splice(i+1,0,"100");
+		}
+	
 	};
 
 	//Checks if an equation ends with an operation, if true duplicates last input
 	if(is_operator(equation_array[equation_array.length-1])){
 		equation_array.push(equation_array[equation_array.length-2]);
-	};
-
-	//Checks for percentage sign		
-	for (var i = 0; i < equation_array.length; i++) {
-		if(equation_array[i] == "%"){
-			equation_array.splice(i+1,0,"100");
-		}
 	};
 
 
@@ -280,14 +280,14 @@ function order_of_operations(array){
 		if(close_p_indexOf < 0){
 			close_p_indexOf = 100000000;
 		}
-		
 	var working_array      =   array.slice(open_p_lastIndexOf+1, close_p_indexOf);	
-		
 		if(working_array.length == 1){
-			//console.log("before splice:",equation_array)
+			console.log("before splice:",equation_array)
 			equation_array.splice(open_p_lastIndexOf,1);
 			equation_array.splice(open_p_lastIndexOf+1,1)
-			//console.log("after splice:",equation_array)
+			open_p_lastIndexOf = 0;
+			close_p_indexOf = 100000000;
+			console.log("after splice:",equation_array)
 		}
 	
 	var percentage_indexOf =   array.indexOf("%",open_p_lastIndexOf);
@@ -297,53 +297,30 @@ function order_of_operations(array){
 	var add_indexOf        =   array.indexOf("+",open_p_lastIndexOf);
 	var sub_indexOf        =   array.indexOf("-",open_p_lastIndexOf);
 	var done = false;
+	
 
 	if(percentage_indexOf >= 0 && percentage_indexOf < close_p_indexOf){
 		ordered_index = percentage_indexOf;
-		var percentages_found = true;
-	}
-	else if(percentage_indexOf < 0 && percentages_found){
-			percentages_found = false; 
 		return;
 	}
 	else if(exponent_indexOf >= 0 && exponent_indexOf < close_p_indexOf){
-		var exponents_found = true;
 		ordered_index = exponent_indexOf;
-	}
-	else if(exponent_indexOf < 0 && exponents_found){
-		exponents_found = false; 
 		return;
 	}
 	else if(mult_indexOf >= 0 && mult_indexOf < close_p_indexOf){
-		var mult_found = true;
 		ordered_index = mult_indexOf;
-	}
-	else if(mult_indexOf < 0 && mult_found){
-		mult_found = false; 
 		return;
 	}
 	else if(divid_indexOf >= 0 && divid_indexOf < close_p_indexOf){
-		var divid_found = true;
 		ordered_index = divid_indexOf;
-	}
-	else if(divid_indexOf < 0 && divid_found){
-		divid_found = false; 
 		return;
 	}
 	else if(add_indexOf >= 0 && add_indexOf < close_p_indexOf){
-		var add_found = true;
 		ordered_index = add_indexOf;
-	}
-	else if(add_indexOf < 0 && add_found){
-		add_found = false; 
 		return;
 	}
 	else if(sub_indexOf >= 0 && sub_indexOf < close_p_indexOf){
-		var sub_found = true;
 		ordered_index = sub_indexOf;
-	}
-	else if(sub_indexOf < 0 && sub_found){
-		sub_found = false; 
 		return;
 	}
 	else{
@@ -410,7 +387,7 @@ function update_variables(state,input){
     		decimal_clicked = true;	
     		}
 
-    		new_operand = new_operand + input;
+    		new_operand += input;
 
     		if(digit_click_num <= 1){
     			equation_array.push(new_operand);
@@ -432,6 +409,14 @@ function update_variables(state,input){
 				new_operand = '';
 				new_operator = '';
     		break;
+
+    	case 'parentheses':
+    		new_operator = input; 
+			equation_array.push(new_operator);
+  			new_operand = '';
+			new_operator = '';
+    		break;
+    		
 
 }
 }
