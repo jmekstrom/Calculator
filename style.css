@@ -61,7 +61,7 @@ input:focus{
 	border: 1px solid gray;
 	border-radius: 5px;
 	background-color: gray;
-	margin-top: 150px;
+	margin-top: 5%;
 }
 
 @font-face {
