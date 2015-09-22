@@ -32,6 +32,6 @@ seeing previous calculations to keep your mathematical thoughts organized.
    ![Alt text](/screenshots/pic1.png "Divid by Zero Case")
    ![Alt text](/screenshots/pic4.png "Complex exponents")
 <h2>Link to Live Preview:</h2>
-<a href="jmekstrom.github.io/Calculator" target="_blank">Click here to see a live preview</a>
+<a href="http://jmekstrom.github.io/Calculator" target="_blank">Click here to see a live preview</a>
 
 
