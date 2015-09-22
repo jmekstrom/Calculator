@@ -11,16 +11,16 @@
 - Percentage calculation (converts percentage to decimal equivalent)
 - Calculates complex exponents, such as:  9^(2/3)
 - Smart calculations, examples:
-   9 + =  (calculates 9 + 9)
-   + 9 =  (calculates 0 + 9)
+   - 9 + =  (calculates 9 + 9)
+   - + 9 =  (calculates 0 + 9)
 - Does not allow input of mulitple operators
 - Order of Operations
 - Parenthesis
 
 <h2>3 Things I learned:</h2>
-1 - Complex Array manipulation using Javascript
-2 - Complex function integration
-3 - 
+ - Complex Array manipulation using Javascript
+ - Complex function integration
+ - 
 
 <h2>Screenshots of application:</h2>
 
