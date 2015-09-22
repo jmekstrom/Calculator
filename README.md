@@ -1,5 +1,15 @@
 <h1>Calculator</h1>
 
+Description of Project:
+
+Feature List:
+
+3 Things I learned:
+
+Screenshots of application:
+
+Link to Live Preview:
+
 ## Calculator 0.1
 HTML:
 - Input: number_0
