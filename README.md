@@ -11,8 +11,10 @@
 - Percentage calculation (converts percentage to decimal equivalent)
 - Calculates complex exponents, such as:  9^(2/3)
 - Smart calculations, examples:
-   - 9 + =  (calculates 9 + 9)
-   - + 9 =  (calculates 0 + 9)
+
+    9 + =  (calculates 9 + 9)
+    
+    + 9 =  (calculates 0 + 9)
 - Does not allow input of mulitple operators
 - Order of Operations
 - Parenthesis
