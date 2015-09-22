@@ -1,14 +1,14 @@
 <h1>Calculator</h1>
 
-Description of Project:
+<h2>Description of Project:</h2>
 
-Feature List:
+<h2>Feature List:</h2>
 
-3 Things I learned:
+<h2>3 Things I learned:</h2>
 
-Screenshots of application:
+<h2>Screenshots of application:</h2>
 
-Link to Live Preview:
+<h2>Link to Live Preview:</h2>
 
 ## Calculator 0.1
 HTML:
