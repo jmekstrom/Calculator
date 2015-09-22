@@ -24,7 +24,10 @@
  - Thorough Debugging Practices
 
 <h2>Screenshots of application:</h2>
-   ![Alt text](/screenshots/equation.png)
+   ![Alt text](/screenshots/pic1.png)
+   ![Alt text](/screenshots/pic3.png)
+   ![Alt text](/screenshots/pic2.png)
+   ![Alt text](/screenshots/pic4.png)
 <h2>Link to Live Preview:</h2>
 
 
