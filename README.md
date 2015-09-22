@@ -1,6 +1,9 @@
 <h1>Calculator</h1>
 
 <h2>Description of Project:</h2>
+Javascript based calculator project for use on a desktop or mobile device. 
+Simple and easy to use.  This calculator allows you to do successive complex calculations while
+seeing previous calculations to keep your mathematical thoughts organized.  
 
 <h2>Feature List:</h2>
 - Standard Functions (add, subtract, divide, multiply)
