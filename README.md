@@ -24,9 +24,9 @@
  - Thorough Debugging Practices
 
 <h2>Screenshots of application:</h2>
-   ![Alt text](/screenshots/pic3.png "Divid by Zero Case")
+   ![Alt text](/screenshots/pic3.png "Parenthesis")
    ![Alt text](/screenshots/pic2.png "Order of Operations")
-   ![Alt text](/screenshots/pic1.png "Parenthesis")
+   ![Alt text](/screenshots/pic1.png "Divid by Zero Case")
    ![Alt text](/screenshots/pic4.png "Complex exponents")
 <h2>Link to Live Preview:</h2>
 
