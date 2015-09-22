@@ -21,10 +21,10 @@
 <h2>3 Things I learned:</h2>
  - Complex Array manipulation using Javascript
  - Complex function integration
- - 
+ - Thorough Debugging Practices
 
 <h2>Screenshots of application:</h2>
-
+   ![Alt text](/screenshots/equation.png)
 <h2>Link to Live Preview:</h2>
 
 
