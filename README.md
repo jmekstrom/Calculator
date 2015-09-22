@@ -3,8 +3,24 @@
 <h2>Description of Project:</h2>
 
 <h2>Feature List:</h2>
+- Standard Functions (add, subtract, divide, multiply)
+- Seperate Clear and All Clear buttons.
+- Allows successive mathematical operations
+- History window to show previous calculations
+- Negate Functionality
+- Percentage calculation (converts percentage to decimal equivalent)
+- Calculates complex exponents, such as:  9^(2/3)
+- Smart calculations, examples:
+   9 + =  (calculates 9 + 9)
+   + 9 =  (calculates 0 + 9)
+- Does not allow input of mulitple operators
+- Order of Operations
+- Parenthesis
 
 <h2>3 Things I learned:</h2>
+1 - Complex Array manipulation using Javascript
+2 - Complex function integration
+3 - 
 
 <h2>Screenshots of application:</h2>
 
